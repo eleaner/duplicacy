@@ -1,9 +1,5 @@
 #!/command/with-contenv bash
 
-backup_pid_file=/var/run/duplicacy_backup.pid
-prune_pid_file=/var/run/duplicacy_prune.pid
-check_pid_file=/var/run/duplicacy_check.pid
-
 converts()
 {
     T=$1
@@ -23,18 +19,18 @@ converts()
     fi
 }
 
-create_backup_pid_file()
+create_check_pid_file()
 {
     # Expect PID as the first parmater
     pid=${1}
-    echo Creating backup pid file, "${backup_pid_file}", with pid="${pid}" | tee -a "$log_file"
-    echo "${pid}" > "${backup_pid_file}"
+    echo Creating check pid file, "${check_pid_file}", with pid="${pid}" | tee -a "$log_file"
+    echo "${pid}" > "${check_pid_file}"
 }
 
-remove_backup_pid_file()
+remove_check_pid_file()
 {
-    echo Removing backup pid file, "${backup_pid_file}"
-    rm "${backup_pid_file}"
+    echo Removing check pid file, "${check_pid_file}"
+    rm "${check_pid_file}"
 }
 
 operation_in_progress()
@@ -43,15 +39,15 @@ operation_in_progress()
     operation=${1}
 
     if [ -f "${backup_pid_file}" ] && [ ! -z "$(cat ${backup_pid_file})" -a -e /proc/$(cat ${backup_pid_file}) ]; then
-        echo A backup is in progress with PID="$(cat ${backup_pid_file})". Skipping "${operation}" | tee -a "$log_file"
+        echo A backup is in progress with PID="$(cat "${backup_pid_file}")". Skipping "${operation}" | tee -a "$log_file"
         return 0
     fi
 
     if [ -f "${prune_pid_file}" ] && [ ! -z "$(cat ${prune_pid_file})" -a -e /proc/$(cat ${prune_pid_file}) ]; then
-        echo A prune is in progress with PID="$(cat ${prune_pid_file})". Skipping "${operation}" | tee -a "$log_file"
+        echo A prune is in progress with PID="$(cat "${prune_pid_file}")". Skipping "${operation}" | tee -a "$log_file"
         return 0
     fi
-    
+
     if [ -f "${check_pid_file}" ] && [ ! -z "$(cat ${check_pid_file})" -a -e /proc/$(cat ${check_pid_file}) ]; then
         echo A check is in progress with PID="$(cat "${check_pid_file}")". Skipping "${operation}" | tee -a "$log_file"
         return 0
@@ -60,6 +56,10 @@ operation_in_progress()
     # No operation in progress
     return 127
 }
+
+backup_pid_file=/var/run/duplicacy_backup.pid
+prune_pid_file=/var/run/duplicacy_prune.pid
+check_pid_file=/var/run/duplicacy_check.pid
 
 my_dir="$(dirname "${BASH_SOURCE[0]}")"
 
@@ -79,15 +79,15 @@ if [[ -n ${EMAIL_SMTP_SERVER} ]] && [[ -n ${EMAIL_TO} ]]; then
     log_file=$log_dir/backup.log
 fi
 
-echo ========== Run backup job at "$(date)" ========== | tee "$log_file"
+echo ========== Run check job at "$(date)" ========== | tee "$log_file"
 
-if operation_in_progress backup; then
+if operation_in_progress check; then
     duration=0
     exitcode=127
 else
     # Use the scripts pid as the pid for simplicity
-    create_backup_pid_file ${$}
-    trap remove_backup_pid_file INT TERM EXIT
+    create_check_pid_file ${$}
+    trap remove_check_pid_file INT TERM EXIT
 
     delay.sh "$log_file"
 
@@ -96,18 +96,20 @@ else
 
     cd "$config_dir" || exit 128
 
-    sh -c "duplicacy $GLOBAL_OPTIONS backup $BACKUP_OPTIONS" | tee -a "$log_file"
+    IFS=';'
+
+    sh -c "duplicacy $GLOBAL_OPTIONS check $CHECK_OPTIONS" | tee -a "$log_file"
     exitcode=${PIPESTATUS[0]}
 
     duration=$(echo "$(date +%s.%N) - $start" | bc)
 fi
 
 if [ "$exitcode" -eq 0 ]; then
-    echo Backup COMPLETED, duration "$(converts "$duration")", log size "$(wc -l < "$log_file")" lines | tee -a "$log_file"
-    subject="duplicacy backup job id \"$hostname:$SNAPSHOT_ID\" COMPLETED"
+    echo check COMPLETED, duration "$(converts "$duration")", log size "$(wc -l < "$log_file")" lines | tee -a "$log_file"
+    subject="duplicacy check job id \"$hostname:$SNAPSHOT_ID\" COMPLETED"
 else
-    echo Backup FAILED, code "$exitcode", duration "$(converts "$duration")", log size "$(wc -l < "$log_file")" lines | tee -a "$log_file"
-    subject="duplicacy backup job id \"$hostname:$SNAPSHOT_ID\" FAILED"
+    echo check FAILED, code "$exitcode", duration "$(converts "$duration")", log size "$(wc -l < "$log_file")" lines | tee -a "$log_file"
+    subject="duplicacy check job id \"$hostname:$SNAPSHOT_ID\" FAILED"
 fi
 
 mailto.sh "$log_dir" "$subject" "$exitcode"

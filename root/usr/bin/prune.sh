@@ -47,6 +47,11 @@ operation_in_progress()
         echo A prune is in progress with PID="$(cat "${prune_pid_file}")". Skipping "${operation}" | tee -a "$log_file"
         return 0
     fi
+    
+    if [ -f "${check_pid_file}" ] && [ ! -z "$(cat ${check_pid_file})" -a -e /proc/$(cat ${check_pid_file}) ]; then
+        echo A check is in progress with PID="$(cat "${check_pid_file}")". Skipping "${operation}" | tee -a "$log_file"
+        return 0
+    fi
 
     # No operation in progress
     return 127
@@ -54,6 +59,7 @@ operation_in_progress()
 
 backup_pid_file=/var/run/duplicacy_backup.pid
 prune_pid_file=/var/run/duplicacy_prune.pid
+check_pid_file=/var/run/duplicacy_check.pid
 
 my_dir="$(dirname "${BASH_SOURCE[0]}")"
 

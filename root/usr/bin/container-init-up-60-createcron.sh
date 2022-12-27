@@ -6,11 +6,15 @@ rm -f $cron_file
 touch $cron_file
 
 if [[ "${BACKUP_CRON}" ]]; then
-    echo "$BACKUP_CRON backup.sh" >> $cron_file
+    echo "$BACKUP_CRON backupchain.sh" >> $cron_file
 fi
 
 if [[ "${PRUNE_CRON}" ]]; then
     echo "$PRUNE_CRON prune.sh" >> $cron_file
+fi
+
+if [[ "${CHECK_CRON}" ]]; then
+    echo "$CHECK_CRON check.sh" >> $cron_file
 fi
 
 if [[ "${BACKUP_END_CRON}" ]]; then
