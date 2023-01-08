@@ -1,5 +1,7 @@
 # Duplicacy
 
+fork of [azinchen/duplicacy]: https://github.com/azinchen/duplicacy with aim the to add missing "check" action and sequencing of actions on the same schedule
+
 [![Docker pulls][dockerhub-pulls]][dockerhub-link]
 [![Docker image size][dockerhub-size]][dockerhub-link]
 [![GitHub release date][github-releasedate]][github-link]
