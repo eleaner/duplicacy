@@ -1,6 +1,6 @@
-# Duplicacy
+# Duplicacy 
 
-fork of https://github.com/azinchen/duplicacy with the aim the of adding "check" action and sequencing actions on the same schedule
+(Work in progress) fork of https://github.com/azinchen/duplicacy with the aim the of adding "check" action and sequencing actions on the same schedule
 
 [![Docker pulls][dockerhub-pulls]][dockerhub-link]
 [![Docker image size][dockerhub-size]][dockerhub-link]
