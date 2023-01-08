@@ -47,7 +47,7 @@ Container images are configured using environment variables passed at runtime.
 | `GLOBAL_OPTIONS` | Set global options for each `duplicacy` command, see ["Global options details"][duplicacy-global-options] for details. Global options are not set by default. |
 | `BACKUP_OPTIONS` | Set options for each `duplicacy backup` command, see `duplicacy backup` command [description][duplicacy-backup] for details. Backup options are not set by default. |
 | `PRUNE_OPTIONS` | Set options for each `duplicacy prune` command, see `duplicacy prune` command [description][duplicacy-prune] for details. Prune options are not set by default. |
-| `RUN_JOB_IMMEDIATELY` | Set to `yes` to run `duplicacy backup` and/or `duplicacy prune` command at container startup. The jobs don't start by default. |
+| `RUN_JOB_IMMEDIATELY` | Set to `yes` to run `duplicacy backup` and/or `duplicacy prune` and/or `duplicacy check` commands at container startup. The jobs don't start by default. |
 | `SNAPSHOT_ID` | Set snapshot id, see `duplicacy init` command [description][duplicacy-init] for details. |
 | `STORAGE_URL` | Set storage url, see `duplicacy init` command [description][duplicacy-init] for details. Duplicacy supports different storage providers, see ["Supported storage backends"][duplicacy-storage] for details. Login credentials for storage url should be set using environment variables, see ["Passwords, credentials and environment variables"][duplicacy-variables] for details. |
 | `JOB_RANDOM_DELAY` | Set maximum value of delay before job startup, in seconds. Jobs run without delay by default. |
