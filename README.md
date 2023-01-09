@@ -32,7 +32,7 @@ docker run \
   -e BACKUP_CRON="0 1 * * *" \
   -e SNAPSHOT_ID="id" \
   -e STORAGE_URL="url" \
-  azinchen/duplicacy
+    ....duplicacy
 ```
 
 ## Environment variables
