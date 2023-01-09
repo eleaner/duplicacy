@@ -42,7 +42,9 @@ Container images are configured using environment variables passed at runtime.
 | :----: | --- |
 | `BACKUP_CRON` | Set schedule for `duplicacy backup` command formatted for crontab file. The `duplicacy backup` command doesn't run if `BACKUP_CRON` is not set. |
 | `PRUNE_CRON` | Set schedule for `duplicacy prune` command formatted for crontab file. The `duplicacy prune` command doesn't run if `PRUNE_CRON` is not set. |
+| `PRUNE_ADD` | yes or empyty. Adds `duplicacy prune` immediately after `duplicacy backup`. Ignored if `PRUNE_CRON` is set. |
 | `CHECK_CRON` | Set schedule for `duplicacy check` command formatted for crontab file. The `duplicacy check` command doesn't run if `CHECK_CRON` is not set. |
+| `CHECK_ADD` | yes or empyty. Adds `duplicacy check` immediately after `duplicacy backup/prune`. Ignored if `CHECK_CRON` is set. |
 | `BACKUP_END_CRON` | Set schedule for force killing of duplicacy backup process formatted for crontab file. The force killing of duplicacy backup process doesn't run if `BACKUP_END_CRON` is not set. |
 | `GLOBAL_OPTIONS` | Set global options for each `duplicacy` command, see ["Global options details"][duplicacy-global-options] for details. Global options are not set by default. |
 | `BACKUP_OPTIONS` | Set options for each `duplicacy backup` command, see `duplicacy backup` command [description][duplicacy-backup] for details. Backup options are not set by default. |
