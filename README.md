@@ -1,6 +1,6 @@
 # Duplicacy 
 
-(Work in progress) fork of https://github.com/azinchen/duplicacy with the aim the of adding "check" action and sequencing actions on the same schedule
+(Work in progress) fork of [azinchen/duplicacy][duplicacy-azinchen] with the aim the of adding "check" action and sequencing actions on the same schedule
 
 [![Docker pulls][dockerhub-pulls]][dockerhub-link]
 [![Docker image size][dockerhub-size]][dockerhub-link]
@@ -42,11 +42,13 @@ Container images are configured using environment variables passed at runtime.
 | :----: | --- |
 | `BACKUP_CRON` | Set schedule for `duplicacy backup` command formatted for crontab file. The `duplicacy backup` command doesn't run if `BACKUP_CRON` is not set. |
 | `PRUNE_CRON` | Set schedule for `duplicacy prune` command formatted for crontab file. The `duplicacy prune` command doesn't run if `PRUNE_CRON` is not set. |
+| `CHECK_CRON` | Set schedule for `duplicacy check` command formatted for crontab file. The `duplicacy check` command doesn't run if `CHECK_CRON` is not set. |
 | `BACKUP_END_CRON` | Set schedule for force killing of duplicacy backup process formatted for crontab file. The force killing of duplicacy backup process doesn't run if `BACKUP_END_CRON` is not set. |
 | `GLOBAL_OPTIONS` | Set global options for each `duplicacy` command, see ["Global options details"][duplicacy-global-options] for details. Global options are not set by default. |
 | `BACKUP_OPTIONS` | Set options for each `duplicacy backup` command, see `duplicacy backup` command [description][duplicacy-backup] for details. Backup options are not set by default. |
 | `PRUNE_OPTIONS` | Set options for each `duplicacy prune` command, see `duplicacy prune` command [description][duplicacy-prune] for details. Prune options are not set by default. |
-| `RUN_JOB_IMMEDIATELY` | Set to `yes` to run `duplicacy backup` and/or `duplicacy prune` command at container startup. The jobs don't start by default. |
+| `CHECK_OPTIONS` | Set options for each `duplicacy check` command, see `duplicacy check` command [description][duplicacy-check] for details. Prune options are not set by default. |
+| `RUN_JOB_IMMEDIATELY` | Set to `yes` to run `duplicacy backup` and/or `duplicacy prune` and/or `duplicacy check` commands at container startup. The jobs don't start by default. |
 | `SNAPSHOT_ID` | Set snapshot id, see `duplicacy init` command [description][duplicacy-init] for details. |
 | `STORAGE_URL` | Set storage url, see `duplicacy init` command [description][duplicacy-init] for details. Duplicacy supports different storage providers, see ["Supported storage backends"][duplicacy-storage] for details. Login credentials for storage url should be set using environment variables, see ["Passwords, credentials and environment variables"][duplicacy-variables] for details. |
 | `JOB_RANDOM_DELAY` | Set maximum value of delay before job startup, in seconds. Jobs run without delay by default. |
@@ -84,6 +86,7 @@ If you have any problems with or questions about this image, please contact me t
 [github-releasedate]: https://img.shields.io/github/release-date/azinchen/nordvpn
 [duplicacy-home]: https://duplicacy.com
 [duplicacy-github]: https://github.com/gilbertchen/duplicacy
+[duplicacy-azinchen]: https://github.com/azinchen/duplicacy
 [duplicacy-license]: https://github.com/gilbertchen/duplicacy/blob/master/LICENSE.md
 [duplicacy-purchase]: https://duplicacy.com/buy.html
 [duplicacy-forum]: https://forum.duplicacy.com
@@ -92,6 +95,7 @@ If you have any problems with or questions about this image, please contact me t
 [duplicacy-init]: https://forum.duplicacy.com/t/init-command-details/1090
 [duplicacy-backup]: https://forum.duplicacy.com/t/backup-command-details/1077
 [duplicacy-prune]: https://forum.duplicacy.com/t/prune-command-details/1005
+[duplicacy-check]: https://forum.duplicacy.com/t/check-command-details/1081
 [duplicacy-filters]: https://forum.duplicacy.com/t/filters-include-exclude-patterns/1089
 [duplicacy-variables]: https://forum.duplicacy.com/t/passwords-credentials-and-environment-variables/1094
 [tz-database]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
